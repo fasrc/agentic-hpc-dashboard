@@ -40,7 +40,7 @@ jobs:
           dnf -y install rpm-build rpmdevtools git-core
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Compute version and release
         id: ver
@@ -85,7 +85,7 @@ jobs:
           rpm -qpl "$rpm_path"
 
       - name: Upload RPM as workflow artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.build.outputs.rpm_name }}
           path: ${{ steps.build.outputs.rpm_path }}
