@@ -98,6 +98,10 @@ install -d -m 0750 %{buildroot}%{ebpfm_outputdir}
 install -d -m 0755 %{buildroot}%{_sysctldir}
 install -m 0644 %{_sourcedir}/packaging/99-ebpfm.conf %{buildroot}%{_sysctldir}/99-ebpfm.conf
 
+# Service environment file. Admin-editable, so it is %config(noreplace) below.
+install -d -m 0755 %{buildroot}%{_sysconfdir}/default
+install -m 0644 %{_sourcedir}/packaging/ebpfm.default %{buildroot}%{_sysconfdir}/default/ebpfm
+
 %files
 %dir %{ebpfm_libdir}
 %dir %{ebpfm_libdir}/lib
@@ -111,6 +115,8 @@ install -m 0644 %{_sourcedir}/packaging/99-ebpfm.conf %{buildroot}%{_sysctldir}/
 # Vendor sysctl drop-in in /usr/lib/sysctl.d (not %config): admins override in
 # /etc/sysctl.d, which takes precedence, so the shipped file stays canonical.
 %{_sysctldir}/99-ebpfm.conf
+# Service env file in /etc: admin-editable, preserve local changes on upgrade.
+%config(noreplace) %{_sysconfdir}/default/ebpfm
 %dir %attr(0750,root,root) %{ebpfm_outputdir}
 
 %post

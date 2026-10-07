@@ -70,6 +70,7 @@ jobs:
           cp -r collector "$topdir/SOURCES/collector"
           mkdir -p "$topdir/SOURCES/packaging"
           cp packaging/rpm/99-ebpfm.conf "$topdir/SOURCES/packaging/99-ebpfm.conf"
+          cp packaging/rpm/ebpfm.default "$topdir/SOURCES/packaging/ebpfm.default"
           cp packaging/rpm/ebpfm-collector.spec "$topdir/SPECS/"
           rpmbuild \
             --define "_topdir $topdir" \
