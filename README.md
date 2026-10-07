@@ -47,6 +47,14 @@ step:
   `99-ebpfm.conf` drop-in above. `%post` applies them immediately via
   `systemd-sysctl`, and systemd re-applies them on every boot — no reboot and no
   `bootstrap` needed.
+  * On EL8's 4.18 kernel `kernel.task_delayacct` has **no writable sysctl** (it
+    was added upstream in 5.14), but delay accounting is compiled in
+    (`CONFIG_TASK_DELAY_ACCT=y`) and on by default, so the data is still
+    collected. The drop-in lists that key with a leading dash
+    (`-kernel.task_delayacct`) so `systemd-sysctl` skips the absent knob
+    silently instead of logging `Couldn't write '1' to 'kernel/task_delayacct'`.
+    `ebpfm check` reports it as a non-blocking WARN ("no such knob — compile-time
+    only"); `sched_schedstats` does exist on 4.18 and is set to 1 normally.
 
 The service is **not** enabled on install; run `ebpfm check` (expect 0 FAIL)
 before enabling.
